@@ -85,6 +85,7 @@ plan:
         MANAGED_OU=$(jq -r '.ManagedOrganizationalUnit' ${CI_PROJECT_DIR}/account_details.json)
         ACCOUNT_REGION=$(jq -r '.AccountRegion' ${CI_PROJECT_DIR}/account_details.json)
         terraform plan -var-file=terraform.tfvars \
+          -var="security_email=${SECURITY_EMAIL}" \
           -var="new_accounts=${ACCOUNTS}" \
           -var="managed_organizational_unit=${MANAGED_OU}" \
           -var="account_region=${ACCOUNT_REGION}" \
