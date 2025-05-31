@@ -140,3 +140,32 @@ Guidelines for contributing to this project to be added.
 ## License
 
 Specify your license here.
+
+## Troubleshooting
+
+### GitLab CI/CD: "No space left on device" Error
+
+If you encounter a "no space left on device" error in your GitLab CI/CD pipeline, particularly when the runner is trying to create a Docker volume for caching, follow these steps:
+
+1. **Check available disk space**: 
+   - If you have access to the GitLab runner's host machine, use the `df -h` command to check available disk space.
+   - Look for the filesystem that contains `/var/lib/docker` and ensure it has sufficient free space.
+
+2. **Clean up Docker resources**:
+   - Remove unused Docker data with: `docker system prune -af --volumes`
+   - This command removes all unused containers, networks, images (both dangling and unreferenced), and volumes.
+   - **Caution**: Make sure this doesn't interfere with other projects using the same runner.
+
+3. **Increase disk space**:
+   - If cleaning up doesn't solve the issue, consider increasing the disk space allocated to the GitLab runner's host machine.
+   - This typically requires intervention from your infrastructure or DevOps team.
+
+4. **Optimize GitLab CI/CD configuration**:
+   - Review your `.gitlab-ci.yml` file and consider optimizing your jobs to use less disk space.
+   - Use specific tags for your jobs to ensure they run on runners with adequate resources.
+
+5. **Configure Docker cleanup**:
+   - In the GitLab runner configuration, you can set the `cleanup_policy` to automatically remove old containers and images.
+   - This helps prevent the accumulation of unused Docker resources over time.
+
+If you continue to experience issues after trying these steps, consult with your DevOps team or GitLab administrator for further assistance.
