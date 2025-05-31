@@ -7,6 +7,10 @@
     {
       "AccountName": "TerraformAccount02",
       "AccountEmail": "huz.aws.p+terra002@gmail.com"
+    },
+    {
+      "AccountName": "TerraformAccount03",
+      "AccountEmail": "huz.aws.p+terra003@gmail.com"
     }
   ],
   "ManagedOrganizationalUnit": "SharedServices",

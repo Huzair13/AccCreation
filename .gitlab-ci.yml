@@ -1,7 +1,23 @@
 stages:
   - validate
+  - import
   - plan
   - apply
+
+import:
+  stage: import
+  script:
+    - cd ${TF_ROOT}
+    - terraform init -backend-config=backend.tfbackend
+    - |
+      # Import existing resources
+      terraform import module.security_account.aws_organizations_account.this $(aws organizations list-accounts --query 'Accounts[?Name==`Security`].Id' --output text)
+      terraform import module.lambda_enroll_account.aws_iam_role.lambda_role MyEnrollLambda_role
+      terraform import module.org.aws_organizations_organizational_unit.ou[\"TestAccount\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`TestAccount`].Id' --output text)
+      terraform import module.org.aws_organizations_organizational_unit.ou[\"Dev\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Dev`].Id' --output text)
+      terraform import module.org.aws_organizations_organizational_unit.ou[\"Production\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Production`].Id' --output text)
+      terraform import module.org.aws_organizations_organizational_unit.ou[\"SharedServices\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`SharedServices`].Id' --output text)
+      terraform import module.scp_baseline.aws_organizations_policy.scp $(aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query 'Policies[?Name==`BaselineDeny`].Id' --output text)
 
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}/envs/global/org-setup
