@@ -1,14 +1,14 @@
-# module "org" {
-#   source = "../../../modules/organizations"
-#   ous = {
-#     # Security       = "ROOT"
-#     # SharedServices = "ROOT"
-#     # Sandbox        = "ROOT"
-#     # TestAccount    = "ROOT"
-#     # Production     = "ROOT"
-#     # Dev            = "ROOT"
-#   }
-# }
+module "org" {
+  source = "../../../modules/organizations"
+  ous = {
+    Security       = "ROOT"
+    # SharedServices = "ROOT"
+    # Sandbox        = "ROOT"
+    # TestAccount    = "ROOT"
+    # Production     = "ROOT"
+    # Dev            = "ROOT"
+  }
+}
 
 module "security_account" {
   source        = "../../../modules/account"
