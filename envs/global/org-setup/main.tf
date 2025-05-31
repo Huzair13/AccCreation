@@ -1,10 +1,10 @@
 module "org" {
   source = "../../../modules/organizations"
   ous = {
-    # Security       = "ROOT"
+    Security       = "ROOT"
     SharedServices = "ROOT"
-    # Sandbox        = "ROOT"
-    TestAccount = "ROOT"
+    Sandbox        = "ROOT"
+    TestAccount    = "ROOT"
     Production     = "ROOT"
     Dev            = "ROOT"
   }
@@ -14,7 +14,7 @@ module "security_account" {
   source        = "../../../modules/account"
   name          = "Security"
   email         = var.security_email
-  parent_ou_id  = var.security_ou_id 
+  parent_ou_id  = module.org.ou_ids["Security"]
 }
 
 module "test_account" {
@@ -55,7 +55,7 @@ module "scp_baseline" {
 }
 EOF
   targets = {
-    SecurityOU = var.security_ou_id
+    SecurityOU = module.org.ou_ids["Security"]
     SharedOU   = module.org.ou_ids["SharedServices"]
   }
 }

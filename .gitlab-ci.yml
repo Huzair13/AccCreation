@@ -25,14 +25,11 @@ before_script:
     cat <<EOF > ${TF_ROOT}/terraform.tfvars
     account_factory_product_id = "${ACCOUNT_FACTORY_PRODUCT_ID}"
     new_account_email = "${NEW_ACCOUNT_EMAIL}"
-    core_ou_id = "${CORE_OU_ID}"
     test_email = "${TEST_EMAIL}"
-    sandbox_ou_id = "${SANDBOX_OU_ID}"
     security_email = "${SECURITY_EMAIL}"
     shared_email = "${SHARED_EMAIL}"
     production_email = "${PRODUCTION_EMAIL}"
     dev_email = "${DEV_EMAIL}"
-    security_ou_id = "${SECURITY_OU_ID}"
     EOF
 
 import:
@@ -44,10 +41,12 @@ import:
       # Import existing resources
       terraform import -var-file=terraform.tfvars module.security_account.aws_organizations_account.this $(aws organizations list-accounts --query 'Accounts[?Name==`Security`].Id' --output text)
       terraform import -var-file=terraform.tfvars module.lambda_enroll_account.aws_iam_role.lambda_role MyEnrollLambda_role
-      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"TestAccount\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`TestAccount`].Id' --output text)
-      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Dev\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Dev`].Id' --output text)
-      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Production\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Production`].Id' --output text)
+      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Security\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Security`].Id' --output text)
       terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"SharedServices\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`SharedServices`].Id' --output text)
+      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Sandbox\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Sandbox`].Id' --output text)
+      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"TestAccount\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`TestAccount`].Id' --output text)
+      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Production\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Production`].Id' --output text)
+      terraform import -var-file=terraform.tfvars module.org.aws_organizations_organizational_unit.ou[\"Dev\"] $(aws organizations list-organizational-units-for-parent --parent-id $(aws organizations list-roots --query 'Roots[0].Id' --output text) --query 'OrganizationalUnits[?Name==`Dev`].Id' --output text)
       terraform import -var-file=terraform.tfvars module.scp_baseline.aws_organizations_policy.scp $(aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query 'Policies[?Name==`BaselineDeny`].Id' --output text)
 
 validate:
