@@ -2,7 +2,7 @@ module "org" {
   source = "../../../modules/organizations"
   ous = {
     Security       = "ROOT"
-    SharedServices = "ROOT"
+    # SharedServices = "ROOT"
     # Sandbox        = "ROOT"
     # TestAccount    = "ROOT"
     # Production     = "ROOT"
@@ -56,7 +56,7 @@ module "scp_baseline" {
 EOF
   targets = {
     SecurityOU = module.org.ou_ids["Security"]
-    SharedOU   = module.org.ou_ids["SharedServices"]
+    # SharedOU   = module.org.ou_ids["SharedServices"]
   }
 }
 
