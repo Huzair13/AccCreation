@@ -1,0 +1,53 @@
+stages:
+  - validate
+  - plan
+  - apply
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/envs/global/org-setup
+
+before_script:
+  - apt-get update && apt-get install -y jq
+  - wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+  - unzip terraform_1.0.0_linux_amd64.zip && mv terraform /usr/local/bin/
+  - terraform --version
+
+validate:
+  stage: validate
+  script:
+    - jq empty account_details.json || (echo "Invalid JSON in account_details.json" && exit 1)
+    - cd ${TF_ROOT}
+    - terraform init -backend-config=backend.tfbackend
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - cd ${TF_ROOT}
+    - terraform init -backend-config=backend.tfbackend
+    - |
+      if [ -f "${CI_PROJECT_DIR}/account_details.json" ]; then
+        ACCOUNTS=$(jq -c '.accounts' ${CI_PROJECT_DIR}/account_details.json)
+        MANAGED_OU=$(jq -r '.ManagedOrganizationalUnit' ${CI_PROJECT_DIR}/account_details.json)
+        ACCOUNT_REGION=$(jq -r '.AccountRegion' ${CI_PROJECT_DIR}/account_details.json)
+        terraform plan -var="new_accounts=${ACCOUNTS}" -var="managed_organizational_unit=${MANAGED_OU}" -var="account_region=${ACCOUNT_REGION}" -out=tfplan
+      else
+        echo "account_details.json not found. Please provide account details."
+        exit 1
+      fi
+  artifacts:
+    paths:
+      - ${TF_ROOT}/tfplan
+
+apply:
+  stage: apply
+  script:
+    - cd ${TF_ROOT}
+    - terraform init -backend-config=backend.tfbackend
+    - terraform apply -auto-approve tfplan
+  dependencies:
+    - plan
+  when: manual
+  only:
+    changes:
+      - account_details.json

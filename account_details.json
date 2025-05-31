@@ -1,0 +1,14 @@
+{
+  "accounts": [
+    {
+      "AccountName": "example-account-1",
+      "AccountEmail": "example1@example.com"
+    },
+    {
+      "AccountName": "example-account-2",
+      "AccountEmail": "example2@example.com"
+    }
+  ],
+  "ManagedOrganizationalUnit": "SharedServices",
+  "AccountRegion": "us-east-1"
+}

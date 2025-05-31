@@ -1,0 +1,5 @@
+bucket         = "my-landing-zone-tfstate"
+key            = "global/landing-zone.tfstate"
+region         = "us-east-1"
+dynamodb_table = "my-landing-zone-tfstate-lock"
+encrypt        = true

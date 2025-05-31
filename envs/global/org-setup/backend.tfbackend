@@ -1,0 +1,4 @@
+bucket         = "landing-zone-account-creation-state-file"
+key            = "global/org-setup/terraform.tfstate"
+region         = "us-east-1"
+dynamodb_table = "account-creation-state-lock"

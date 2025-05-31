@@ -1,0 +1,61 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+
+# Crash log files
+crash.log
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore override files as they are usually used to override resources locally and don't need to be committed
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore large files and directories
+*.zip
+*.tar.gz
+*.log
+node_modules/
+
+# Ignore sensitive or environment-specific files
+*.pem
+*.key
+*.env
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+
+# Ignore AWS SAM build directory
+.aws-sam/
+
+# Ignore any local backup files
+*.bak
+
+# Ignore Python virtual environment
+venv/
+*.pyc
+__pycache__/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+
+# Ignore generated files
+*.generated.*
+
+# Ignore package-lock.json for npm projects
+package-lock.json
+
+# Ignore yarn.lock for yarn projects
+yarn.lock
