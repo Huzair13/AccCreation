@@ -145,27 +145,47 @@ Specify your license here.
 
 ### GitLab CI/CD: "No space left on device" Error
 
-If you encounter a "no space left on device" error in your GitLab CI/CD pipeline, particularly when the runner is trying to create a Docker volume for caching, follow these steps:
+If you encounter a "no space left on device" error in your GitLab CI/CD pipeline, particularly when the runner is trying to create a Docker volume for caching, this indicates a problem with the GitLab runner's host machine. Since this error occurs during the preparation phase, before any job-specific scripts run, it needs to be addressed at the runner level.
 
-1. **Check available disk space**: 
-   - If you have access to the GitLab runner's host machine, use the `df -h` command to check available disk space.
+Here are the steps that your GitLab administrator or DevOps team should take:
+
+1. **Check and increase available disk space**: 
+   - On the GitLab runner's host machine, use the `df -h` command to check available disk space.
    - Look for the filesystem that contains `/var/lib/docker` and ensure it has sufficient free space.
+   - If necessary, increase the disk space allocated to this filesystem or the entire host machine.
 
-2. **Clean up Docker resources**:
-   - Remove unused Docker data with: `docker system prune -af --volumes`
-   - This command removes all unused containers, networks, images (both dangling and unreferenced), and volumes.
-   - **Caution**: Make sure this doesn't interfere with other projects using the same runner.
+2. **Clean up Docker resources on the host machine**:
+   - SSH into the GitLab runner's host machine.
+   - Run `docker system prune -af --volumes` to remove all unused Docker resources.
+   - **Caution**: Ensure this doesn't interfere with other projects using the same runner.
 
-3. **Increase disk space**:
-   - If cleaning up doesn't solve the issue, consider increasing the disk space allocated to the GitLab runner's host machine.
-   - This typically requires intervention from your infrastructure or DevOps team.
+3. **Optimize GitLab Runner configuration**:
+   - Edit the GitLab Runner configuration file (usually located at `/etc/gitlab-runner/config.toml`).
+   - Add or modify the `cleanup_policy` in the `[runners.docker]` section:
+     ```toml
+     [runners.docker]
+       cleanup_policy = "always"
+     ```
+   - This ensures Docker cleanup happens after every job.
 
-4. **Optimize GitLab CI/CD configuration**:
-   - Review your `.gitlab-ci.yml` file and consider optimizing your jobs to use less disk space.
-   - Use specific tags for your jobs to ensure they run on runners with adequate resources.
+4. **Implement periodic cleanup**:
+   - Set up a cron job on the host machine to periodically clean up Docker resources.
+   - For example, add this line to the root crontab to run cleanup daily:
+     ```
+     0 1 * * * docker system prune -af --volumes
+     ```
 
-5. **Configure Docker cleanup**:
-   - In the GitLab runner configuration, you can set the `cleanup_policy` to automatically remove old containers and images.
-   - This helps prevent the accumulation of unused Docker resources over time.
+5. **Consider runner-specific options**:
+   - Use the `pull_policy` option in the runner configuration to control how images are pulled.
+   - Set `pull_policy = "if-not-present"` to avoid unnecessary image downloads.
 
-If you continue to experience issues after trying these steps, consult with your DevOps team or GitLab administrator for further assistance.
+6. **Monitor and alert**:
+   - Implement monitoring on the GitLab runner's host machine to alert when disk space is running low.
+   - This allows proactive management of resources before jobs fail.
+
+If these steps don't resolve the issue, consider:
+- Upgrading to a larger instance or adding more disk space to the existing instance.
+- Distributing jobs across multiple runners to reduce load on any single machine.
+- Reviewing and optimizing the projects running on this runner to reduce their disk space usage.
+
+Remember, these changes need to be implemented by someone with administrative access to the GitLab runner's host machine. If you don't have this access, please forward these instructions to your DevOps team or GitLab administrator.

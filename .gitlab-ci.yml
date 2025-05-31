@@ -6,16 +6,15 @@ stages:
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}/envs/global/org-setup
 
+default:
+  tags:
+    - shell  # Use the specific runner tag here
+
 before_script:
-  # Clean up Docker resources
-  - docker system prune -af --volumes || true
-  # Install required tools
-  - apt-get update && apt-get install -y jq
-  - wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
-  - unzip terraform_1.0.0_linux_amd64.zip && mv terraform /usr/local/bin/
+  # Install required tools (if not already available on the runner)
+  - command -v jq >/dev/null 2>&1 || { echo >&2 "jq is required but not installed. Aborting."; exit 1; }
+  - command -v terraform >/dev/null 2>&1 || { echo >&2 "Terraform is required but not installed. Aborting."; exit 1; }
   - terraform --version
-  # Check available disk space
-  - df -h
 
 validate:
   stage: validate
@@ -24,6 +23,8 @@ validate:
     - cd ${TF_ROOT}
     - terraform init -backend-config=backend.tfbackend
     - terraform validate
+  after_script:
+    - rm -rf ${TF_ROOT}/.terraform
 
 plan:
   stage: plan
@@ -43,6 +44,8 @@ plan:
   artifacts:
     paths:
       - ${TF_ROOT}/tfplan
+  after_script:
+    - rm -rf ${TF_ROOT}/.terraform
 
 apply:
   stage: apply
@@ -56,3 +59,10 @@ apply:
   only:
     changes:
       - account_details.json
+  after_script:
+    - rm -rf ${TF_ROOT}/.terraform
+    - rm -f ${TF_ROOT}/tfplan
+
+after_script:
+  - rm -rf ${CI_PROJECT_DIR}/.terraform
+  - find ${CI_PROJECT_DIR} -name ".terraform*" -type d -prune -exec rm -rf {} +
