@@ -26,6 +26,13 @@ before_script:
     account_factory_product_id = "${ACCOUNT_FACTORY_PRODUCT_ID}"
     new_account_email = "${NEW_ACCOUNT_EMAIL}"
     core_ou_id = "${CORE_OU_ID}"
+    test_email = "${TEST_EMAIL}"
+    sandbox_ou_id = "${SANDBOX_OU_ID}"
+    security_email = "${SECURITY_EMAIL}"
+    shared_email = "${SHARED_EMAIL}"
+    production_email = "${PRODUCTION_EMAIL}"
+    dev_email = "${DEV_EMAIL}"
+    security_ou_id = "${SECURITY_OU_ID}"
     EOF
 
 import:
