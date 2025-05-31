@@ -31,34 +31,34 @@ module "security_account" {
 #   parent_ou_id  = module.org.ou_ids["SharedServices"]
 # }
 
-# module "scp_baseline" {
-#   source      = "../../../modules/scps"
-#   name        = "BaselineDeny"
-#   description = "Deny everything except a few services"
-#   content     = <<EOF
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Effect": "Deny",
-#       "Action": "*",
-#       "Resource": "*",
-#       "Condition": {
-#         "StringNotEquals": {
-#           "aws:RequestedRegion": [
-#             "us-east-1"
-#           ]
-#         }
-#       }
-#     }
-#   ]
-# }
-# EOF
-#   targets = {
-#     SecurityOU = module.org.ou_ids["Security"]
-#     SharedOU   = module.org.ou_ids["SharedServices"]
-#   }
-# }
+module "scp_baseline" {
+  source      = "../../../modules/scps"
+  name        = "BaselineDeny"
+  description = "Deny everything except a few services"
+  content     = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1"
+          ]
+        }
+      }
+    }
+  ]
+}
+EOF
+  targets = {
+    SecurityOU = module.org.ou_ids["Security"]
+    SharedOU   = module.org.ou_ids["SharedServices"]
+  }
+}
 
 # module "lambda_enroll_account" {
 #   source       = "../../../modules/lambda"
