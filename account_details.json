@@ -1,11 +1,11 @@
 {
   "accounts": [
     {
-      "AccountName": "TerraformAccount001",
+      "AccountName": "TerraformAccount01",
       "AccountEmail": "huz.aws.p+terra001@gmail.com"
     },
     {
-      "AccountName": "TerraformAccount002",
+      "AccountName": "TerraformAccount02",
       "AccountEmail": "huz.aws.p+terra002@gmail.com"
     }
   ],

@@ -15,6 +15,10 @@ before_script:
   - command -v jq >/dev/null 2>&1 || { echo >&2 "jq is required but not installed. Aborting."; exit 1; }
   - command -v terraform >/dev/null 2>&1 || { echo >&2 "Terraform is required but not installed. Aborting."; exit 1; }
   - terraform --version
+  # Set AWS credentials as environment variables
+  - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - export AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
 
 validate:
   stage: validate
@@ -36,7 +40,14 @@ plan:
         ACCOUNTS=$(jq -c '.accounts' ${CI_PROJECT_DIR}/account_details.json)
         MANAGED_OU=$(jq -r '.ManagedOrganizationalUnit' ${CI_PROJECT_DIR}/account_details.json)
         ACCOUNT_REGION=$(jq -r '.AccountRegion' ${CI_PROJECT_DIR}/account_details.json)
-        terraform plan -var="new_accounts=${ACCOUNTS}" -var="managed_organizational_unit=${MANAGED_OU}" -var="account_region=${ACCOUNT_REGION}" -out=tfplan
+        terraform plan -var-file=terraform.tfvars \
+          -var="new_accounts=${ACCOUNTS}" \
+          -var="managed_organizational_unit=${MANAGED_OU}" \
+          -var="account_region=${ACCOUNT_REGION}" \
+          -var="account_factory_product_id=${ACCOUNT_FACTORY_PRODUCT_ID}" \
+          -var="new_account_email=${NEW_ACCOUNT_EMAIL}" \
+          -var="core_ou_id=${CORE_OU_ID}" \
+          -out=tfplan
       else
         echo "account_details.json not found. Please provide account details."
         exit 1
