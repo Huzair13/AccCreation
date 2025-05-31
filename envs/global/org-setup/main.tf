@@ -2,7 +2,7 @@ module "org" {
   source = "../../../modules/organizations"
   ous = {
     Security       = "ROOT"
-    # SharedServices = "ROOT"
+    SharedServices = "ROOT"
     # Sandbox        = "ROOT"
     # TestAccount    = "ROOT"
     # Production     = "ROOT"
