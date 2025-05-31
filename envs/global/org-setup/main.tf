@@ -10,12 +10,12 @@
 #   }
 # }
 
-# module "security_account" {
-#   source        = "../../../modules/account"
-#   name          = "Security"
-#   email         = var.security_email
-#   parent_ou_id  = module.org.ou_ids["Security"]
-# }
+module "security_account" {
+  source        = "../../../modules/account"
+  name          = "Security"
+  email         = var.security_email
+  parent_ou_id  = module.org.ou_ids["Security"]
+}
 
 # module "test_account" {
 #   source      = "../../../modules/account"
