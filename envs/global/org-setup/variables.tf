@@ -1,6 +1,5 @@
 variable "home_region"   { default = "us-east-1" }
 variable "test_email"    { type = string }
-variable "sandbox_ou_id" { type = string }
 
 variable "account_factory_product_id" {
   type        = string
@@ -42,16 +41,6 @@ variable "dev_email" {
 variable "new_account_email" {
   type        = string
   description = "Email address for the new account created via Service Catalog"
-}
-
-variable "security_ou_id" {
-  type        = string
-  description = "ID of the Security Organizational Unit"
-}
-
-variable "core_ou_id" {
-  type        = string
-  description = "ID of the Core Organizational Unit"
 }
 
 variable "new_ou_name" {

@@ -30,6 +30,10 @@ before_script:
     shared_email = "${SHARED_EMAIL}"
     production_email = "${PRODUCTION_EMAIL}"
     dev_email = "${DEV_EMAIL}"
+    ou_factory_product_id = "${OU_FACTORY_PRODUCT_ID}"
+    sso_user_email = "${SSO_USER_EMAIL}"
+    new_ou_name = "${NEW_OU_NAME}"
+    ou_product_id = "${OU_PRODUCT_ID}"
     EOF
 
 import:
@@ -73,9 +77,6 @@ plan:
           -var="new_accounts=${ACCOUNTS}" \
           -var="managed_organizational_unit=${MANAGED_OU}" \
           -var="account_region=${ACCOUNT_REGION}" \
-          -var="account_factory_product_id=${ACCOUNT_FACTORY_PRODUCT_ID}" \
-          -var="new_account_email=${NEW_ACCOUNT_EMAIL}" \
-          -var="core_ou_id=${CORE_OU_ID}" \
           -out=tfplan
       else
         echo "account_details.json not found. Please provide account details."
