@@ -55,30 +55,26 @@ variable "ou_product_id" {
   default     = "prod-xmve3rknwimb6"  # Replace this with the actual product ID if different
 }
 
-variable "new_accounts" {
-  type = list(object({
-    AccountName  = string
-    AccountEmail = string
+variable "ou_configs" {
+  type = map(object({
+    accounts = list(object({
+      AccountName  = string
+      AccountEmail = string
+    }))
+    ManagedOrganizationalUnit = string
+    AccountRegion             = string
   }))
-  default = []
-}
-
-variable "managed_organizational_unit" {
-  type    = string
-  default = "SharedServices"
-}
-
-variable "account_region" {
-  type    = string
-  default = "us-east-1"
+  description = "Map of OU configurations with accounts"
 }
 
 variable "product_id" {
-  type    = string
-  default = "prod-xmve3rknwimb6"
+  type        = string
+  default     = "prod-xmve3rknwimb6"
+  description = "The ID of the AWS Service Catalog product"
 }
 
 variable "provisioning_artifact_name" {
-  type    = string
-  default = "AWS Control Tower Account Factory"
+  type        = string
+  default     = "AWS Control Tower Account Factory"
+  description = "The name of the provisioning artifact"
 }

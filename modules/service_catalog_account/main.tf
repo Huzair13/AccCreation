@@ -26,7 +26,7 @@ resource "aws_servicecatalog_provisioned_product" "new_accounts" {
   }
   provisioning_parameters {
     key   = "ManagedOrganizationalUnit"
-    value = var.managed_organizational_unit
+    value = var.new_accounts[count.index].ManagedOrganizationalUnit
   }
   provisioning_parameters {
     key   = "AccountRegion"

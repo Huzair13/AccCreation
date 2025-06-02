@@ -77,13 +77,18 @@
 # }
 
 
-
 module "service_catalog_accounts" {
-  source = "../../../modules/service_catalog_account"
+  source   = "../../../modules/service_catalog_account"
+  for_each = var.ou_configs
 
-  new_accounts                = var.new_accounts
-  managed_organizational_unit = var.managed_organizational_unit
-  account_region              = var.account_region
+  new_accounts = [
+    for account in each.value.accounts : {
+      AccountName                = account.AccountName
+      AccountEmail               = account.AccountEmail
+      ManagedOrganizationalUnit  = each.value.ManagedOrganizationalUnit
+    }
+  ]
+  account_region              = each.value.AccountRegion
   product_id                  = var.product_id
   provisioning_artifact_name  = var.provisioning_artifact_name
 }

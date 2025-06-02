@@ -2,13 +2,9 @@ variable "new_accounts" {
   type = list(object({
     AccountName  = string
     AccountEmail = string
+    ManagedOrganizationalUnit = string
   }))
   description = "List of new accounts to be created"
-}
-
-variable "managed_organizational_unit" {
-  type        = string
-  description = "The organizational unit to place the new accounts in"
 }
 
 variable "account_region" {
