@@ -77,62 +77,13 @@
 # }
 
 
-variable "new_accounts" {
-  type = list(object({
-    AccountName  = string
-    AccountEmail = string
-  }))
-  default = []
-}
 
-variable "managed_organizational_unit" {
-  type    = string
-  default = "SharedServices"
-}
+module "service_catalog_accounts" {
+  source = "../../../modules/service_catalog_account"
 
-variable "account_region" {
-  type    = string
-  default = "us-east-1"
-}
-
-resource "aws_servicecatalog_provisioned_product" "new_accounts" {
-  count                      = length(var.new_accounts)
-  name                       = var.new_accounts[count.index].AccountName
-  product_id                 = "prod-xmve3rknwimb6"
-  provisioning_artifact_name = "AWS Control Tower Account Factory"
-
-  provisioning_parameters {
-    key   = "AccountEmail"
-    value = var.new_accounts[count.index].AccountEmail
-  }
-  provisioning_parameters {
-    key   = "AccountName"
-    value = var.new_accounts[count.index].AccountName
-  }
-  provisioning_parameters {
-    key   = "SSOUserEmail"
-    value = var.new_accounts[count.index].AccountEmail
-  }
-  provisioning_parameters {
-    key   = "SSOUserFirstName"
-    value = split("@", var.new_accounts[count.index].AccountEmail)[0]
-  }
-  provisioning_parameters {
-    key   = "SSOUserLastName"
-    value = "User"
-  }
-  provisioning_parameters {
-    key   = "ManagedOrganizationalUnit"
-    value = var.managed_organizational_unit
-  }
-  provisioning_parameters {
-    key   = "AccountRegion"
-    value = var.account_region
-  }
-
-  timeouts {
-    create = "60m"
-    update = "60m"
-    delete = "60m"
-  }
+  new_accounts                = var.new_accounts
+  managed_organizational_unit = var.managed_organizational_unit
+  account_region              = var.account_region
+  product_id                  = var.product_id
+  provisioning_artifact_name  = var.provisioning_artifact_name
 }

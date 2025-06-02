@@ -54,3 +54,31 @@ variable "ou_product_id" {
   description = "The ID of the custom Service Catalog product for creating OUs"
   default     = "prod-xmve3rknwimb6"  # Replace this with the actual product ID if different
 }
+
+variable "new_accounts" {
+  type = list(object({
+    AccountName  = string
+    AccountEmail = string
+  }))
+  default = []
+}
+
+variable "managed_organizational_unit" {
+  type    = string
+  default = "SharedServices"
+}
+
+variable "account_region" {
+  type    = string
+  default = "us-east-1"
+}
+
+variable "product_id" {
+  type    = string
+  default = "prod-xmve3rknwimb6"
+}
+
+variable "provisioning_artifact_name" {
+  type    = string
+  default = "AWS Control Tower Account Factory"
+}
