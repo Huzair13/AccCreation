@@ -84,7 +84,7 @@ plan:
         OU_CONFIGS=$(jq -c '.' ${CI_PROJECT_DIR}/account_details.json)
         terraform plan -var-file=terraform.tfvars \
           -var="security_email=${SECURITY_EMAIL}" \
-          -var="ou_configs=${OU_CONFIGS}" \
+          -var='ou_configs=['"${OU_CONFIGS}"']' \
           -out=tfplan
       else
         echo "account_details.json not found. Please provide account details."

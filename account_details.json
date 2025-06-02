@@ -20,7 +20,7 @@
   {
     "accounts": [
       {
-        "AccountName": "TerraformSecAccount001",
+        "AccountName": "TerraformSecAccount01",
         "AccountEmail": "huz.aws.p+terra002security@gmail.com"
       }
     ],

@@ -56,7 +56,7 @@ variable "ou_product_id" {
 }
 
 variable "ou_configs" {
-  type = map(object({
+  type = list(object({
     accounts = list(object({
       AccountName  = string
       AccountEmail = string
@@ -64,7 +64,7 @@ variable "ou_configs" {
     ManagedOrganizationalUnit = string
     AccountRegion             = string
   }))
-  description = "Map of OU configurations with accounts"
+  description = "List of OU configurations with accounts"
 }
 
 variable "product_id" {
