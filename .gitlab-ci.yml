@@ -81,7 +81,7 @@ plan:
     - terraform init -backend-config=backend.tfbackend
     - |
       if [ -f "${CI_PROJECT_DIR}/account_details.json" ]; then
-        OU_CONFIGS=$(jq -c 'to_entries | map({ key: .key, value: .value }) | from_entries' ${CI_PROJECT_DIR}/account_details.json)
+        OU_CONFIGS=$(jq -c '.' ${CI_PROJECT_DIR}/account_details.json)
         terraform plan -var-file=terraform.tfvars \
           -var="security_email=${SECURITY_EMAIL}" \
           -var="ou_configs=${OU_CONFIGS}" \
