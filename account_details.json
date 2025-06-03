@@ -26,5 +26,25 @@
     ],
     "ManagedOrganizationalUnit": "Security",
     "AccountRegion": "us-east-1"
+  },
+  {
+    "accounts": [
+      {
+        "AccountName": "NetworkAccount01",
+        "AccountEmail": "huz.aws.p+networkAcc01@gmail.com"
+      }
+    ],
+    "ManagedOrganizationalUnit": "Network",
+    "AccountRegion": "us-east-1"
+  },
+    {
+    "accounts": [
+      {
+        "AccountName": "ProductionAccount01",
+        "AccountEmail": "huz.aws.p+production01@gmail.com"
+      }
+    ],
+    "ManagedOrganizationalUnit": "Production",
+    "AccountRegion": "us-east-1"
   }
 ]
