@@ -37,6 +37,16 @@
     "ManagedOrganizationalUnit": "Network",
     "AccountRegion": "us-east-1"
   },
+  {
+    "accounts": [
+      {
+        "AccountName": "NetworkAccount02",
+        "AccountEmail": "huz.aws.p+networkAcc02@gmail.com"
+      }
+    ],
+    "ManagedOrganizationalUnit": "Network",
+    "AccountRegion": "us-east-1"
+  },
     {
     "accounts": [
       {
