@@ -36,6 +36,7 @@ before_script:
     trusted_account_id = "${TRUSTED_ACCOUNT_ID}"
     organization_id = "${ORGANIZATION_ID}"
     cross_account_policy_arn = "${CROSS_ACCOUNT_POLICY_ARN}"
+    management_account_id = "${MANAGEMENT_ACCOUNT_ID}"
     EOF
 
 
