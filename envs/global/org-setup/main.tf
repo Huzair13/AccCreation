@@ -29,15 +29,15 @@ module "service_catalog_accounts" {
 }
 
 module "cross_account_role" {
-  for_each = toset(local.all_account_ids)
+  for_each = module.providers.providers
 
   source = "../../../modules/bootstrap_execution_role"
 
   providers = {
-    aws = aws[each.value]
+    aws = each.value
   }
 
-  cross_account_role_name = "CrossAccountExecutionRole-${each.value}"
+  cross_account_role_name = "CrossAccountExecutionRole-${each.key}"
   trusted_account_id      = var.trusted_account_id
   organization_id         = var.organization_id
   policy_arn              = var.cross_account_policy_arn
