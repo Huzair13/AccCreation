@@ -1,3 +1,3 @@
-output "execution_role_arn" {
-  value = aws_iam_role.execution_role.arn
+output "cross_account_role_arn" {
+  value = aws_iam_role.cross_account_role.arn
 }
