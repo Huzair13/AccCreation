@@ -42,7 +42,13 @@
             {
                 "AccountName": "ProductionAccount01",
                 "AccountEmail": "huz.aws.p+production01@gmail.com"
-            },
+            }
+        ],
+        "ManagedOrganizationalUnit": "Production",
+        "AccountRegion": "us-east-1"
+    },
+    {
+        "accounts": [
             {
                 "AccountName": "ProductionAccount02",
                 "AccountEmail": "huz.aws.p+production02@gmail.com"
