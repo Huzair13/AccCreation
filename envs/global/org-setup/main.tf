@@ -28,11 +28,14 @@ module "service_catalog_accounts" {
   provisioning_artifact_name  = var.provisioning_artifact_name
 }
 
-
 module "bootstrap_execution_role" {
-  for_each = toset(flatten(values(module.service_catalog_accounts[*].account_ids)))
+  for_each = toset(local.all_account_ids)
 
   source = "../../../modules/bootstrap_execution_role"
+
+  providers = {
+    aws = aws[each.value]
+  }
 
   target_account_id  = each.value
   codebuild_role_arn = "arn:aws:iam::918116814056:role/codebuild-role"
