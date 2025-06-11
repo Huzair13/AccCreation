@@ -50,8 +50,8 @@
     {
         "accounts": [
             {
-                "AccountName": "ProductionAccount02",
-                "AccountEmail": "huz.aws.p+production02@gmail.com"
+                "AccountName": "ProductionAccount03",
+                "AccountEmail": "huz.aws.p+production03@gmail.com"
             }
         ],
         "ManagedOrganizationalUnit": "Production",
