@@ -15,6 +15,6 @@ provider "aws" {
   alias  = "cross_account"
   region = var.home_region
   assume_role {
-    role_arn = "arn:aws:iam::${var.trusted_account_id}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::${var.trusted_account_id}:role/AWSControlTowerExecution"
   }
 }

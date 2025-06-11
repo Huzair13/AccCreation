@@ -5,7 +5,9 @@ output "provisioned_products" {
 
 output "account_ids" {
   value = [
-    for product in aws_servicecatalog_provisioned_product.new_accounts : jsondecode(product.outputs["AccountId"]).Value
+    for product in aws_servicecatalog_provisioned_product.new_accounts : [
+      for output in product.outputs : jsondecode(output.value).Value if output.key == "AccountId"
+    ][0]
   ]
   description = "The IDs of the accounts created by this module"
 }
