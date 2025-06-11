@@ -20,16 +20,6 @@
     {
         "accounts": [
             {
-                "AccountName": "TerraformSecAccount01",
-                "AccountEmail": "huz.aws.p+terra002security@gmail.com"
-            }
-        ],
-        "ManagedOrganizationalUnit": "Security",
-        "AccountRegion": "us-east-1"
-    },
-    {
-        "accounts": [
-            {
                 "AccountName": "NetworkAccount01",
                 "AccountEmail": "huz.aws.p+networkAcc01@gmail.com"
             }
