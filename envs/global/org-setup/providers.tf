@@ -13,8 +13,8 @@ provider "aws" {
 # Provider for cross-account access
 provider "aws" {
   alias  = "cross_account"
-  region = var.home_region
+  region = "us-east-1"
   assume_role {
-    role_arn = "arn:aws:iam::${var.trusted_account_id}:role/AWSControlTowerExecution"
+    role_arn = "arn:aws:iam::${each.key}:role/AWSControlTowerExecution"
   }
 }
