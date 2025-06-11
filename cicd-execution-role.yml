@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create CICD Pipeline Execution Role for cross-account access
+
+Resources:
+  CICDPipelineExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "CICDPipelineExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: 
+                - "arn:aws:iam::918116814056:role/codepipeline-role"
+                - "arn:aws:iam::918116814056:role/codebuuild-role"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "CICDExecutionPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
