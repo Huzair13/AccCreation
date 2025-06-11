@@ -94,3 +94,8 @@ variable "cross_account_policy_arn" {
   description = "The ARN of the IAM policy to attach to the cross-account role"
   default     = "arn:aws:iam::aws:policy/PowerUserAccess"
 }
+
+variable "management_account_id" {
+  type        = string
+  description = "The AWS account ID of the management account"
+}

@@ -30,15 +30,15 @@ module "service_catalog_accounts" {
 
 module "cross_account_role" {
   source = "../../../modules/bootstrap_execution_role"
-  for_each = toset(local.all_account_ids)
+  for_each = { for account in flatten([for sc in module.service_catalog_accounts : sc.account_ids]) : account => account }
 
   providers = {
     aws = aws.cross_account
   }
 
-  cross_account_role_name = "CrossAccountExecutionRole-${each.key}"
-  trusted_account_id      = var.trusted_account_id
+  cross_account_role_name = "AWSControlTowerExecution"
+  trusted_account_id      = var.management_account_id
   organization_id         = var.organization_id
-  policy_arn              = var.cross_account_policy_arn
+  policy_arn              = "arn:aws:iam::aws:policy/AdministratorAccess"
   region                  = var.home_region
 }
