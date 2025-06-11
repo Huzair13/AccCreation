@@ -52,7 +52,7 @@ variable "new_ou_name" {
 variable "ou_product_id" {
   type        = string
   description = "The ID of the custom Service Catalog product for creating OUs"
-  default     = "prod-xmve3rknwimb6"  # Replace this with the actual product ID if different
+  default     = "prod-xmve3rknwimb6" 
 }
 
 variable "ou_configs" {
@@ -77,4 +77,20 @@ variable "provisioning_artifact_name" {
   type        = string
   default     = "AWS Control Tower Account Factory"
   description = "The name of the provisioning artifact"
+}
+
+variable "trusted_account_id" {
+  type        = string
+  description = "The AWS account ID of your management account or the account from which you'll be running Terraform to manage other accounts. This account will be allowed to assume the cross-account role."
+}
+
+variable "organization_id" {
+  type        = string
+  description = "The ID of the AWS Organization"
+}
+
+variable "cross_account_policy_arn" {
+  type        = string
+  description = "The ARN of the IAM policy to attach to the cross-account role"
+  default     = "arn:aws:iam::aws:policy/PowerUserAccess"
 }

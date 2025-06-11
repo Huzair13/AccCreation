@@ -1,17 +1,23 @@
-variable "target_account_id" {
-  description = "Account ID of the target child account"
+variable "cross_account_role_name" {
+  description = "Name of the cross-account role to create"
+  type        = string
+  default     = "CrossAccountExecutionRole"
+}
+
+variable "trusted_account_id" {
+  description = "Account ID of the trusted AWS account that can assume this role"
   type        = string
 }
 
-variable "codebuild_role_arn" {
-  description = "ARN of the CodeBuild role which will assume this role"
+variable "organization_id" {
+  description = "ID of the AWS Organization"
   type        = string
 }
 
-variable "execution_role_name" {
-  description = "Name of the execution role to create"
+variable "policy_arn" {
+  description = "ARN of the IAM policy to attach to the role"
   type        = string
-  default     = "TerraformExecutionRole"
+  default     = "arn:aws:iam::aws:policy/PowerUserAccess"
 }
 
 variable "region" {

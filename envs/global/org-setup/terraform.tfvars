@@ -4,3 +4,7 @@ test_email = "huzphotos1303+testemail@gmail.com"
 production_email = "huzphotos1303+testctproduction@gmail.com"
 dev_email = "huzphotos1303+testctdev@gmail.com"
 account_factory_product_id="prod-xmve3rknwimb6"
+
+trusted_account_id      = "918116814056"
+organization_id         = "r-4a18"
+cross_account_policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"  

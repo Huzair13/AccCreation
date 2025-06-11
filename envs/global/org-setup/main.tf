@@ -28,7 +28,7 @@ module "service_catalog_accounts" {
   provisioning_artifact_name  = var.provisioning_artifact_name
 }
 
-module "bootstrap_execution_role" {
+module "cross_account_role" {
   for_each = toset(local.all_account_ids)
 
   source = "../../../modules/bootstrap_execution_role"
@@ -37,7 +37,9 @@ module "bootstrap_execution_role" {
     aws = aws[each.value]
   }
 
-  target_account_id  = each.value
-  codebuild_role_arn = "arn:aws:iam::918116814056:role/codebuild-role"
-  region             = "us-east-1"
+  cross_account_role_name = "CrossAccountExecutionRole-${each.value}"
+  trusted_account_id      = var.trusted_account_id
+  organization_id         = var.organization_id
+  policy_arn              = var.cross_account_policy_arn
+  region                  = "us-east-1"
 }
