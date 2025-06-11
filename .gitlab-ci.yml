@@ -33,6 +33,9 @@ before_script:
     sso_user_email = "${SSO_USER_EMAIL}"
     new_ou_name = "${NEW_OU_NAME}"
     ou_product_id = "${OU_PRODUCT_ID}"
+    trusted_account_id = "${TRUSTED_ACCOUNT_ID}"
+    organization_id = "${ORGANIZATION_ID}"
+    cross_account_policy_arn = "${CROSS_ACCOUNT_POLICY_ARN}"
     EOF
 
 
