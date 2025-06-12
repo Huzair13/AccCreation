@@ -1,25 +1,86 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create CICD Pipeline Execution Role for cross-account access
-
+Description: "Template to Create an IAM Role in OU Account"
+ 
+Parameters:
+  SharedServicesAccountID:
+    Description : Account ID of the Shared Services Account that initiates code deployment to this account.
+    Type: String
+    ConstraintDescription: Must be a valid AWS Account ID without hyphens.
+    AllowedPattern: '\d{12}'
+    MinLength: 12
+    MaxLength: 12
 Resources:
-  CICDPipelineExecutionRole:
-    Type: "AWS::IAM::Role"
+  MyAssumRole:
+    Type: AWS::IAM::Role
     Properties:
-      RoleName: "CICDPipelineExecutionRole"
+      RoleName: "cross-account-role-shared-service"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
-              AWS: 
-                - "arn:aws:iam::918116814056:role/codepipeline-role"
-                - "arn:aws:iam::918116814056:role/codebuuild-role"
-            Action: "sts:AssumeRole"
+              AWS:
+                - !Sub arn:aws:iam::${SharedServicesAccountID}:root
+            Action:
+              - 'sts:AssumeRole'
+      Description: Role to provide access to Administrator
       Policies:
-        - PolicyName: "CICDExecutionPolicy"
+        - PolicyName: EmbeddedInlinePolicy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              - Effect: Allow
-                Action: "*"
-                Resource: "*"
+            - Sid: S3FullAccess
+              Effect: Allow
+              Action:
+                - 's3:*'
+              Resource: '*'
+ 
+            - Sid: DynamodbFullAccess
+              Effect: Allow
+              Action:
+                - 'dynamodb:*'
+              Resource: '*'
+ 
+            - Sid: EC2FullAccess
+              Effect: Allow
+              Action:
+                - 'ec2:*'
+              Resource: '*'
+ 
+            - Sid: RamFullAccess
+              Effect: Allow
+              Action:
+                - 'ram:*'
+              Resource: '*'
+ 
+            - Sid: LogsFullAccess
+              Effect: Allow
+              Action:
+                - 'logs:*'
+              Resource: '*'
+ 
+            - Sid: ECRFullAccess
+              Effect: Allow
+              Action:
+                - 'ecr:*'
+              Resource: '*'
+ 
+            - Sid: KMSFullAccess
+              Effect: Allow
+              Action:
+                - 'kms:*'
+              Resource: '*'
+ 
+            - Sid: NFWFullAccess
+              Effect: Allow
+              Action:
+                - 'network-firewall:*'
+              Resource: '*'
+ 
+Outputs:
+  RoleName:
+    Description: Name of Created IAM Role
+    Value: !Ref MyAssumRole
+  RoleArn:
+    Description: Arn of Created Role
+    Value: !GetAtt MyAssumRole.Arn
