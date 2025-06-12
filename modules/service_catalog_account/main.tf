@@ -51,9 +51,10 @@ locals {
 }
 
 resource "aws_ssm_parameter" "account_configs" {
-  count = length(var.new_accounts) > 0 ? 1 : 0
-  name  = "/ram/configuration"
-  type  = "String"
-  value = jsonencode(local.account_configs)
+  count       = var.create_ssm_parameter ? 1 : 0
+  name        = "/ram/configuration"
+  type        = "String"
+  value       = jsonencode(local.account_configs)
   description = "Account configurations for TGW and subnet sharing"
+  overwrite   = true
 }

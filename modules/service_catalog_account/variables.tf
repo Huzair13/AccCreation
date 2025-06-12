@@ -23,3 +23,9 @@ variable "provisioning_artifact_name" {
   type        = string
   description = "The name of the provisioning artifact"
 }
+
+variable "create_ssm_parameter" {
+  type        = bool
+  description = "Whether to create the SSM parameter for account configurations"
+  default     = true
+}

@@ -110,9 +110,9 @@ apply:
   dependencies:
     - plan
   when: manual
-  only:
-    changes:
-      - account_details.json
+  # only:
+  #   changes:
+  #     - account_details.json
   after_script:
     - rm -rf ${TF_ROOT}/.terraform
     - rm -f ${TF_ROOT}/tfplan

@@ -26,4 +26,5 @@ module "service_catalog_accounts" {
   account_region             = var.ou_configs[count.index].AccountRegion
   product_id                 = var.product_id
   provisioning_artifact_name = var.provisioning_artifact_name
+  create_ssm_parameter       = count.index == 0 ? true : false
 }
