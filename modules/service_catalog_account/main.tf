@@ -40,15 +40,20 @@ resource "aws_servicecatalog_provisioned_product" "new_accounts" {
   }
 }
 
-resource "aws_ssm_parameter" "account_configs" {
-  name  = "/ram/configuration"
-  type  = "String"
-  value = jsonencode({
+locals {
+  account_configs = {
     for i, product in aws_servicecatalog_provisioned_product.new_accounts : 
     [for output in product.outputs : output.value if output.key == "AccountId"][0] => {
       share_tgw = var.new_accounts[i].share_tgw
       share_subnets = var.new_accounts[i].share_subnets
     }
-  })
+  }
+}
+
+resource "aws_ssm_parameter" "account_configs" {
+  count = length(var.new_accounts) > 0 ? 1 : 0
+  name  = "/ram/configuration"
+  type  = "String"
+  value = jsonencode(local.account_configs)
   description = "Account configurations for TGW and subnet sharing"
 }
