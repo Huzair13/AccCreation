@@ -50,24 +50,11 @@ locals {
   }
 }
 
-data "aws_ssm_parameter" "existing_config" {
-  name  = "/ram/configuration"
-  count = var.create_ssm_parameter ? 1 : 0
-}
-
-locals {
-  existing_configs = try(
-    jsondecode(data.aws_ssm_parameter.existing_config[0].value),
-    {}
-  )
-  merged_configs = merge(local.existing_configs, local.account_configs)
-}
-
 resource "aws_ssm_parameter" "account_configs" {
   count       = var.create_ssm_parameter ? 1 : 0
   name        = "/ram/configuration"
   type        = "String"
-  value       = jsonencode(local.merged_configs)
+  value       = jsonencode(local.account_configs)
   description = "Account configurations for TGW and subnet sharing"
   overwrite   = true
 }
