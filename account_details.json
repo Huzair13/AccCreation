@@ -66,5 +66,15 @@
         ],
         "ManagedOrganizationalUnit": "Dev",
         "AccountRegion": "us-east-1"
+    },
+            {
+        "accounts": [
+            {
+                "AccountName": "PresidioAccount002",
+                "AccountEmail": "huz.aws.p+pres02@gmail.com"
+            }
+        ],
+        "ManagedOrganizationalUnit": "Dev",
+        "AccountRegion": "us-east-1"
     }
 ]
