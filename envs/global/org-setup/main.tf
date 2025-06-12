@@ -19,6 +19,8 @@ module "service_catalog_accounts" {
       AccountName               = account.AccountName
       AccountEmail              = account.AccountEmail
       ManagedOrganizationalUnit = var.ou_configs[count.index].ManagedOrganizationalUnit
+      share_tgw                 = account.share_tgw
+      share_subnets             = account.share_subnets
     }
   ]
   account_region             = var.ou_configs[count.index].AccountRegion

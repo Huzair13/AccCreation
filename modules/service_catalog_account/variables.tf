@@ -3,8 +3,10 @@ variable "new_accounts" {
     AccountName  = string
     AccountEmail = string
     ManagedOrganizationalUnit = string
+    share_tgw = bool
+    share_subnets = bool
   }))
-  description = "List of new accounts to be created"
+  description = "List of new accounts to be created with TGW and subnet sharing preferences"
 }
 
 variable "account_region" {

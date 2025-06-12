@@ -60,11 +60,13 @@ variable "ou_configs" {
     accounts = list(object({
       AccountName  = string
       AccountEmail = string
+      share_tgw    = bool
+      share_subnets = bool
     }))
     ManagedOrganizationalUnit = string
     AccountRegion             = string
   }))
-  description = "List of OU configurations with accounts"
+  description = "List of OU configurations with accounts, including TGW and subnet sharing preferences"
 }
 
 variable "product_id" {
