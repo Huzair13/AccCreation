@@ -97,16 +97,6 @@ apply:
 
     # Get all created account IDs into JSON
     - terraform output -json created_account_ids > account_ids.json || exit 1
-
-    # Loop through each account and deploy StackSet
-    - |
-      for account_id in $(jq -r '.[] | .[]' account_ids.json); do
-        echo "Deploying StackSet for account: ${account_id}"
-        aws cloudformation create-stack-instances \
-          --stack-set-name "${STACKSET_NAME}" \
-          --accounts ${account_id} \
-          --regions us-east-1 || exit 1
-      done
   dependencies:
     - plan
   when: manual

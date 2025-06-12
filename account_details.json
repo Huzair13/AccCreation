@@ -76,5 +76,17 @@
         ],
         "ManagedOrganizationalUnit": "Dev",
         "AccountRegion": "us-east-1"
+    },
+     {
+        "accounts": [
+            {
+                "AccountName": "NewNetwork002",
+                "AccountEmail": "huz.aws.p+newnet002@gmail.com"
+            }
+        ],
+        "ManagedOrganizationalUnit": "Network",
+        "AccountRegion": "us-east-1",
+        "share_tgw": true,
+        "share_subnets": true
     }
 ]
