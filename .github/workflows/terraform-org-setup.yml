@@ -24,9 +24,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    
-    - name: Debug AWS_ROLE_ARN
-      run: echo "AWS_ROLE_ARN=${{ env.AWS_ROLE_ARN }}"
 
     - name: Configure AWS credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v2
@@ -64,10 +61,6 @@ jobs:
 
     - name: Terraform init & validate
       working-directory: ${{ env.TF_ROOT }}
-      env:
-        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
-        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
       run: |
         terraform init -backend-config=backend.tfbackend
         terraform validate
@@ -114,10 +107,6 @@ jobs:
 
     - name: Terraform Init
       working-directory: ${{ env.TF_ROOT }}
-      env:
-        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
-        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
       run: terraform init -backend-config=backend.tfbackend
 
     - name: Terraform Plan
@@ -186,10 +175,6 @@ jobs:
 
     - name: Terraform Apply
       working-directory: ${{ env.TF_ROOT }}
-      env:
-        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
-        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
       run: |
         terraform init -backend-config=backend.tfbackend
         terraform apply -auto-approve tfplan
