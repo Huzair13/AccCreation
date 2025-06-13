@@ -1,6 +1,9 @@
 name: Terraform Organization Setup Pipeline
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
