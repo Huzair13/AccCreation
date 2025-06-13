@@ -57,8 +57,12 @@ jobs:
         jq empty account_details.json || (echo "Invalid JSON in account_details.json" && exit 1)
 
     - name: Terraform init & validate
+      working-directory: ${{ env.TF_ROOT }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
       run: |
-        cd ${TF_ROOT}
         terraform init -backend-config=backend.tfbackend
         terraform validate
 
@@ -103,18 +107,19 @@ jobs:
         EOF
 
     - name: Terraform Init
-      run: |
-        cd ${TF_ROOT}
-        terraform init -backend-config=backend.tfbackend
+      working-directory: ${{ env.TF_ROOT }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
+      run: terraform init -backend-config=backend.tfbackend
 
     - name: Terraform Plan
+      working-directory: ${{ env.TF_ROOT }}
       run: |
-        cd ${TF_ROOT}
         if [ -f "${{ github.workspace }}/account_details.json" ]; then
-          OU_CONFIGS=$(cat ${{ github.workspace }}/account_details.json)
           terraform plan -var-file=terraform.tfvars \
-            -var="security_email=${{ secrets.SECURITY_EMAIL }}" \
-            -var="ou_configs=${OU_CONFIGS}" \
+            -var-file=${{ github.workspace }}/account_details.json \
             -out=tfplan
         else
           echo "account_details.json not found. Please provide account details."
@@ -125,7 +130,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: tfplan
-        path: ${TF_ROOT}/tfplan
+        path: ${{ env.TF_ROOT }}/tfplan
 
   apply:
     name: Terraform Apply
@@ -171,11 +176,15 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: tfplan
-        path: ${TF_ROOT}
+        path: ${{ env.TF_ROOT }}
 
     - name: Terraform Apply
+      working-directory: ${{ env.TF_ROOT }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}
       run: |
-        cd ${TF_ROOT}
         terraform init -backend-config=backend.tfbackend
         terraform apply -auto-approve tfplan
         terraform output -json created_account_ids > account_ids.json || exit 1
